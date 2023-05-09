@@ -1,0 +1,66 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+options: toc:nil title:nil
+#+title: Expose
+#+author: Robert Roth
+#+email: s2roroth@uni-trier.de
+#+language: de
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 30.0.50 (Org mode 9.6.5)
+#+cite_export:
+#+latex_class: assignment
+#+latex_class_options: 
+#+latex_header:\newcommand{\name}{Robert Roth}
+#+latex_header:\newcommand{\matrikelnr}{1415920}
+#+latex_header:\newcommand{\email}{s2roroth@uni-trier.de}
+#+latex_header:\newcommand{\titelname}{Exposé zum Abschlussprojekt}
+#+latex_header:\newcommand{\vorlesung}{Fortgeschrittene Softwaretechnik}
+#+latex_header_extra:
+#+description:
+#+keywords:
+#+subtitle: 
+#+latex_engraved_theme:
+#+latex_compiler: texlive
+#+date: \today
+
+#+BEGIN_EXPORT latex
+\fancyhead[C]{}
+\hrule \medskip % Upper rule
+\begin{minipage}{0.295\textwidth} 
+\raggedright
+\footnotesize
+\name \hfill\\   
+\matrikelnr\hfill\\
+\href{mailto:\email}{\email} 
+\end{minipage}
+\begin{minipage}{0.4\textwidth} 
+\centering 
+\large 
+\titelname\\ 
+\normalsize 
+\vorlesung\\ 
+\end{minipage}
+\begin{minipage}{0.295\textwidth} 
+\raggedleft
+\today\hfill\\
+\end{minipage}
+\medskip\hrule 
+\bigskip
+#+END_EXPORT
+** Beschreibung:
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+In dem Abschlussprojekt sollen die Themen Continous Integration und Visualisierung in Augmented Reality miteinander vereint werden. Die finale Idee für das Projekt ist aus einer anderen Idee entstanden, die sich so leider nicht umsetzen lässt. Aus diesem Grund werden im Folgenden zwei Ideen vorgestellt.
+
+/1. Idee:/\\
+In der ersten Idee sollten der Workflow eines Repositories dargestellt werden. Zum Beispiel, in GitHub Actions sollten die einzelnen Schritte der .yml-Datei visuell dargestellt werden. Die Visualisierung war dabei wie eine Art Baum angedacht, in der jeder Schritt ein Knotenpunkt ist und parallele Abläufe werden auf derselben Ebene dargestellt. Das Ganze sollte dann aber 3-Dimensional in Augemented Reality dargestellt werden, mit anderen Worten jeder Knotenpunkt kann als Grundobjekt Sphäre in Unity dargestellt werden. So können die Daten aus GitHub Actions, die Teil des Themenblocks Continous Integration sind, visuell für eine Augmented Reality Anwendung dargestellt werden und so zwei Themen vereinen.\\
+Dabei ergibt sich jedoch ein großes Problem: Die Abläufe sind nicht parallel, sondern meistens in einer klaren Reihenfolge. Dadurch ergibt sich dann keine Baumstruktur, sondern ein Zeitstrahl. Die Visualisierung eines Zeitstrahls ist dann Teil der zweiten Idee geworden.
+
+/2. Idee:/\\
+Bei diesem Ansatz sollen die Schritte des Workflows ganz bewusst als Zeitstrahl dargestellt werden. Dabei sollen Schritte, die erfolgreich gelaufen sind, als grüne Sphäre dargestellt werden. Wenn ein Schritt fehlschlägt, so wird dies als rote Sphäre dargestellt. Wenn ein Schritt übersprungen wurden, weil beispielsweise ein vorheriger Schritt fehlgeschlagen ist, so soll dies als graue Sphäre dargestellt werden. Wenn man eine Sphäre berührt, so soll ein Tooltip erscheinen, der den Namen des jeweiligen Schritts anzeigt bzw. im Fall eines fehlgeschlagenen Schritts außerdem auch eine Fehlermeldung.\\
+Auf die Daten kann mithilfe einer REST API von GitHub Actions zugegegriffen werden. Mit anderen Worten, man kann auf die Daten jedes öffentlichen Projekts zugreifen und, wenn vorhanden, die Schritte des Workflows abfragen. In der finalen Version soll es möglich sein, ein öffentliches Projekt und die entsprechende Run-ID anzugeben und dann entsprechend den Verlauf des Runs dargestellt zu bekommen.
