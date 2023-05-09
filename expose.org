@@ -58,9 +58,25 @@
 In dem Abschlussprojekt sollen die Themen Continous Integration und Visualisierung in Augmented Reality miteinander vereint werden. Die finale Idee für das Projekt ist aus einer anderen Idee entstanden, die sich so leider nicht umsetzen lässt. Aus diesem Grund werden im Folgenden zwei Ideen vorgestellt.
 
 /1. Idee:/\\
-In der ersten Idee sollten der Workflow eines Repositories dargestellt werden. Zum Beispiel, in GitHub Actions sollten die einzelnen Schritte der .yml-Datei visuell dargestellt werden. Die Visualisierung war dabei wie eine Art Baum angedacht, in der jeder Schritt ein Knotenpunkt ist und parallele Abläufe werden auf derselben Ebene dargestellt. Das Ganze sollte dann aber 3-Dimensional in Augemented Reality dargestellt werden, mit anderen Worten jeder Knotenpunkt kann als Grundobjekt Sphäre in Unity dargestellt werden. So können die Daten aus GitHub Actions, die Teil des Themenblocks Continous Integration sind, visuell für eine Augmented Reality Anwendung dargestellt werden und so zwei Themen vereinen.\\
+In der ersten Idee sollte der Workflow eines Repositories dargestellt werden. Zum Beispiel sollten in GitHub Actions die einzelnen Schritte der .yml-Datei visuell dargestellt werden. Die Visualisierung war dabei wie ein Baum angedacht, in der jeder Schritt ein Knotenpunkt ist und parallele Abläufe werden auf derselben Ebene dargestellt. Das Ganze sollte dann aber 3-Dimensional in Augemented Reality dargestellt werden. Mit anderen Worten: Jeder Knotenpunkt kann als Grundobjekt Sphäre in Unity dargestellt werden. So können die Daten aus GitHub Actions, die Teil des Themenblocks Continous Integration sind, visuell für eine Augmented Reality Anwendung dargestellt werden und so zwei Themen vereinen.\\
+Wie in Abbildung [[fig:idee1]] zu sehen, soll erst Task 1 abgeschlossen werden. Danach laufen 2 und 3 parallel. Anschließend laufen 4 und 5 parallel und danach 6 und 7.\\
 Dabei ergibt sich jedoch ein großes Problem: Die Abläufe sind nicht parallel, sondern meistens in einer klaren Reihenfolge. Dadurch ergibt sich dann keine Baumstruktur, sondern ein Zeitstrahl. Die Visualisierung eines Zeitstrahls ist dann Teil der zweiten Idee geworden.
 
+#+CAPTION:Beispiel für einen Baum wie in der ersten Idee beschrieben.
+#+NAME:fig:idee1
+#+attr_latex: :width 300px
+[[./img/Idee1.jpg]]
+
 /2. Idee:/\\
-Bei diesem Ansatz sollen die Schritte des Workflows ganz bewusst als Zeitstrahl dargestellt werden. Dabei sollen Schritte, die erfolgreich gelaufen sind, als grüne Sphäre dargestellt werden. Wenn ein Schritt fehlschlägt, so wird dies als rote Sphäre dargestellt. Wenn ein Schritt übersprungen wurden, weil beispielsweise ein vorheriger Schritt fehlgeschlagen ist, so soll dies als graue Sphäre dargestellt werden. Wenn man eine Sphäre berührt, so soll ein Tooltip erscheinen, der den Namen des jeweiligen Schritts anzeigt bzw. im Fall eines fehlgeschlagenen Schritts außerdem auch eine Fehlermeldung.\\
-Auf die Daten kann mithilfe einer REST API von GitHub Actions zugegegriffen werden. Mit anderen Worten, man kann auf die Daten jedes öffentlichen Projekts zugreifen und, wenn vorhanden, die Schritte des Workflows abfragen. In der finalen Version soll es möglich sein, ein öffentliches Projekt und die entsprechende Run-ID anzugeben und dann entsprechend den Verlauf des Runs dargestellt zu bekommen.
+Bei diesem Ansatz sollen die Schritte des Workflows ganz bewusst als Zeitstrahl dargestellt werden. Dabei sollen Schritte, die erfolgreich gelaufen sind, als grüne Sphäre dargestellt werden. Wenn ein Schritt fehlschlägt, so wird dies als rote Sphäre dargestellt. Wenn ein Schritt übersprungen wurde, weil beispielsweise ein vorheriger Schritt fehlgeschlagen ist, so soll dies als graue Sphäre dargestellt werden. Wenn man eine Sphäre berührt, so soll ein Tooltip erscheinen, der den Namen des jeweiligen Schritts anzeigt bzw. im Fall eines fehlgeschlagenen Schritts außerdem auch eine Fehlermeldung.\\
+Auf die Daten kann mithilfe einer REST API von GitHub Actions zugegriffen werden. Mit anderen Worten, man kann auf die Daten jedes öffentlichen Projekts zugreifen und, wenn vorhanden, die Schritte des Workflows abfragen. In der finalen Version soll es möglich sein, ein öffentliches Projekt und die entsprechende Run-ID anzugeben und dann entsprechend den Verlauf des Runs dargestellt zu bekommen.
+
+#+Begin_EXPORT latex
+\largeskip
+#+END_EXPORT
+
+#+CAPTION: Zeitstrahl, bei dem die ersten drei Tasks laufen und der vierte fehlschlägt, wodurch die restlichen Tasks übersprungen werden.
+#+NAME:fig:idee2
+#+attr_latex: :width 300px
+[[./img/Idee2.jpg]]
+
