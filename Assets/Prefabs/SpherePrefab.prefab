@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 255316145472806109}
   - component: {fileID: 7496157862827729373}
   - component: {fileID: 2731633160646965223}
+  - component: {fileID: 2411706178402930678}
+  - component: {fileID: 4726860866287141964}
   m_Layer: 0
   m_Name: SpherePrefab
   m_TagString: Untagged
@@ -194,3 +196,30 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &2411706178402930678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122892963841409587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 499236b17e9e47fca2c361d4acc9445b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4726860866287141964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122892963841409587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183e8dd8b58276c4a8f2b807059981b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
+  touchableCollider: {fileID: 7496157862827729373}

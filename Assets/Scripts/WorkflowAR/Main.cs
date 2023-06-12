@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using TMPro;
 using UnityEngine;
 
 namespace WorkflowAR
@@ -11,6 +15,7 @@ namespace WorkflowAR
     {
         public GameObject spherePrefab;
         public GameObject gridPrefab;
+        public GameObject tooltipPrefab;
 
         private String _url = "https://api.github.com/repos/RothRobe/FST22_UEB01/actions/runs/3411067822/jobs";
         private List<GameObject> _sphereList = new List<GameObject>();
@@ -93,7 +98,26 @@ namespace WorkflowAR
             {
                 temp.GetComponent<Renderer>().material.color = Color.black;
             }
+            AddToolTip(step, temp);
             return temp;
+        }
+
+        private void AddToolTip(Step step, GameObject sphere)
+        {
+            GameObject toolTip = Instantiate(tooltipPrefab, sphere.transform, false);
+            toolTip.GetComponent<ToolTip>().ToolTipText = "Name: " + step.name +
+                                                                "\nStatus: " + step.status +
+                                                                "\nConclusion: " + step.conclusion +
+                                                                "\nNumber: " + step.number +
+                                                                "\nStarted at: " + step.started_at +
+                                                                "\nCompleted at: " + step.completed_at;
+            toolTip.GetComponent<ToolTipConnector>().Target = sphere;
+            
+            toolTip.SetActive(false);
+            toolTip.name = "ToolTip_" + step.name;
+            toolTip.transform.localPosition = new Vector3(0, _sphereSize, 0);
+            toolTip.transform.localScale = new Vector3(10f, 10f, 10f);
+            toolTip.GetComponent<ToolTip>().ShowBackground = false;
         }
         
         
