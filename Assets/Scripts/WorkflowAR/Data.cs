@@ -4,25 +4,44 @@ namespace WorkflowAR
 {
     //These classes are used for parsing the JSON string into objects.
     
-    
     [Serializable]
     public class Data
     {
         public int total_count;
-        public Job[] jobs;
-        public int runner_id;
-        public string runner_name;
-        public int runner_group_id;
-        public string runner_group_name;
+        public WorkflowRun[] workflow_runs;
 
-        public Data(int total_count, Job[] jobs, int runner_id, string runner_name, int runner_group_id, string runner_group_name)
+        public Data(int total_count, WorkflowRun[] workflow_runs)
+        {
+            this.total_count = total_count;
+            this.workflow_runs = workflow_runs;
+        }
+    }
+
+    [Serializable]
+    public class WorkflowRun
+    {
+        public long id;
+        public String name;
+        public String conclusion;
+
+        public WorkflowRun(long id, String name, String conclusion)
+        {
+            this.id = id;
+            this.name = name;
+            this.conclusion = conclusion;
+        }
+    }
+    
+    [Serializable]
+    public class Run
+    {
+        public int total_count;
+        public Job[] jobs;
+        public Run(int total_count, Job[] jobs)
         {
             this.total_count = total_count;
             this.jobs = jobs;
-            this.runner_id = runner_id;
-            this.runner_name = runner_name;
-            this.runner_group_id = runner_group_id;
-            this.runner_group_name = runner_group_name;
+   
         }
     }
 
