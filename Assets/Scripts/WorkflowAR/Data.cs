@@ -23,13 +23,10 @@ namespace WorkflowAR
         public long id;
         public String name;
         public String conclusion;
-
-        public WorkflowRun(long id, String name, String conclusion)
-        {
-            this.id = id;
-            this.name = name;
-            this.conclusion = conclusion;
-        }
+        public String trigger;
+        public String status;
+        public String url;
+        public String html_url;
     }
     
     [Serializable]
@@ -48,8 +45,8 @@ namespace WorkflowAR
     [Serializable]
     public class Job
     {
-        public int id;
-        public int run_id;
+        public long id;
+        public long run_id;
         public string workflow_name;
         public string head_branch;
         public string run_url;
@@ -66,7 +63,7 @@ namespace WorkflowAR
         public string name;
         public Step[] steps;
         public string check_run_url;
-
+/*
         public Job(int id, int run_id, string workflow_name, string head_branch, string run_url, int run_attempt, string node_id, string head_sha, string url,
             string html_url, string status, string conclusion, string created_at, string started_at, string completed_at, string name, Step[] steps, string check_run_url)
         {
@@ -88,7 +85,7 @@ namespace WorkflowAR
             this.name = name;
             this.steps = steps;
             this.check_run_url = check_run_url;
-        }
+        }*/
         
     }
 

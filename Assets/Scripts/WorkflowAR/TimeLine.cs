@@ -28,7 +28,7 @@ namespace WorkflowAR
 
         spheresize = new Vector3(0.1f, 0.1f, 0.1f);
         
-        StartVisualization(_url);
+        //StartVisualization(_url);
     }
 
 
