@@ -99,7 +99,7 @@ namespace WorkflowAR
             }
             else
             {
-                temp.GetComponent<Renderer>().material.color = Color.black;
+                temp.GetComponent<Renderer>().material.color = Color.white;
             }
             
             temp.transform.localPosition = new Vector3(x, 0f, 0f);
@@ -200,6 +200,8 @@ namespace WorkflowAR
             GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/TextPrefab"));
             go.name = "MetaData";
             TextMeshPro tmp = go.GetComponent<TextMeshPro>();
+            tmp.outlineColor = Color.black;
+            tmp.outlineWidth = 0.15f;
             tmp.text = "";
             foreach (Job job in run.jobs)
             {
