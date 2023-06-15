@@ -27,13 +27,20 @@ namespace WorkflowAR
             if (isColliding)
             {
                 GameObject main = GameObject.Find("Main");
-                main.GetComponent<Menu>().DestroyMenu();
+                main.GetComponent<RunMenu>().DestroyMenu();
                 Debug.Log(url);
                 main.GetComponent<TimeLine>().StartVisualization(url + "/jobs");
             }
             else
             {
-                GameObject.Find("EmptyParent").GetComponent<GridObjectCollection>().UpdateCollection();
+                GameObject parent = GameObject.Find("EmptyParent");
+
+                foreach (Transform child in parent.transform)
+                {
+                    child.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                }
+                
+                parent.GetComponent<GridObjectCollection>().UpdateCollection();
             }
         }
     }

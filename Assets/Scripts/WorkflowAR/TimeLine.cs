@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using TMPro;
 using UnityEngine;
 
 namespace WorkflowAR
@@ -10,7 +11,6 @@ namespace WorkflowAR
     public class TimeLine : MonoBehaviour
     {
     private GameObject spherePrefab;
-    private GameObject gridPrefab;
     private GameObject tooltipPrefab;
 
     //private String _url = "https://api.github.com/repos/RothRobe/FST22_UEB01/actions/runs/3411067822/jobs";
@@ -23,11 +23,8 @@ namespace WorkflowAR
     void Start()
     {
         spherePrefab = Resources.Load<GameObject>("Prefabs/SpherePrefab");
-        gridPrefab = Resources.Load<GameObject>("Prefabs/GridPrefab");
         tooltipPrefab = Resources.Load<GameObject>("Prefabs/ToolTipPrefab");
-
         spheresize = new Vector3(0.1f, 0.1f, 0.1f);
-        
         //StartVisualization(_url);
     }
 
@@ -40,27 +37,46 @@ namespace WorkflowAR
 
         //Parsing Data
         Run run = JsonToData(jsonData);
+        
+        
 
         //Creating Spheres
         _sphereList = new List<GameObject>[run.total_count];
         sphereParents = new GameObject[run.total_count];
-
         for (int i = 0; i < run.total_count; i++)
         {
             _sphereList[i] = new List<GameObject>();
             sphereParents[i] = new GameObject();
             sphereParents[i].transform.position = new Vector3(0f, spheresize.y * 2 * i, 0.5f);
-
+            float lastX = 0;
+            
             for (int j = 0; j < run.jobs[i].steps.Length; j++)
             {
-                _sphereList[i].Add(CreateSphere(run.jobs[i].steps[j], i, j));
+                if (j == 0)
+                {
+                    _sphereList[i].Add(CreateSphere(run.jobs[i].steps[j], i, 0));
+                }
+                else
+                {
+                    lastX = lastX + spheresize.x * 1.1f + CalculateDuration(run.jobs[i].steps[j]) * 0.02f;
+                    _sphereList[i].Add(CreateSphere(run.jobs[i].steps[j], i, lastX));
+                }
             }
-            //Aligning Spheres
-            //AlignSpheres(i);
         }
         //Drawing Lines and Resizing Spheres
         DrawAllLines();
+        
+        AddMetaData(run);
 
+    }
+
+    private void AddMetaData(Run run)
+    {
+        GameObject line = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        line.transform.position = new Vector3(- spheresize.x, (run.total_count - 1) * spheresize.y, 0.5f);
+        line.transform.localScale = new Vector3(0.01f, (spheresize.y * 2 * run.total_count) - spheresize.y, spheresize.z);
+
+        //TextMeshPro tmp = gameObject.AddComponent<TextMeshPro>();
     }
 
 
@@ -83,7 +99,7 @@ namespace WorkflowAR
 
 
 
-    private GameObject CreateSphere(Step step, int jobIndex, int stepIndex)
+    private GameObject CreateSphere(Step step, int jobIndex, float x)
     {
         GameObject temp = Instantiate(spherePrefab, sphereParents[jobIndex].transform, false);
         if (step.conclusion.Equals("success"))
@@ -102,14 +118,28 @@ namespace WorkflowAR
         {
             temp.GetComponent<Renderer>().material.color = Color.black;
         }
-        
+
         //TODO implement getting the distance between steps
-        temp.transform.localPosition = new Vector3(stepIndex * 2 * spheresize.x, 0f, 0f);
+        temp.transform.localPosition = new Vector3(x, 0f, 0f);
         temp.transform.localScale = spheresize;
         
         AddToolTip(step, temp);
         return temp;
     }
+
+    private long CalculateDuration(Step step)
+    {
+        String[] startArray = step.started_at.Substring(11, 8).Split(':');
+        String[] endArray = step.completed_at.Substring(11, 8).Split(':');
+        
+        long start = Int64.Parse(startArray[0]) * 3600 + Int64.Parse(startArray[1]) * 60 + Int64.Parse(startArray[2]);
+        long end = Int64.Parse(endArray[0]) * 3600 + Int64.Parse(endArray[1]) * 60 + Int64.Parse(endArray[2]);
+        
+        return end - start;
+
+    }
+    
+    
 
     private void AddToolTip(Step step, GameObject sphere)
     {
@@ -120,7 +150,6 @@ namespace WorkflowAR
                                                       "\nNumber: " + step.number +
                                                       "\nStarted at: " + step.started_at +
                                                       "\nCompleted at: " + step.completed_at;
-        //toolTip.GetComponent<ToolTipConnector>().Target = sphere;
 
         toolTip.SetActive(false);
         toolTip.name = "ToolTip_" + step.name;
@@ -128,18 +157,6 @@ namespace WorkflowAR
         toolTip.transform.localScale = new Vector3(4f, 4f, 4f);
         toolTip.GetComponent<ToolTip>().ShowBackground = false;
     }
-
-
-/*
-    private void AlignSpheres(int job)
-    {
-        GridObjectCollection goc = _grids[job].GetComponent<GridObjectCollection>();
-        goc.Rows = 1;
-        goc.CellWidth = _spaceBetweenSpheres[job];
-        goc.UpdateCollection();
-    }
-*/
-
 
     private void DrawLine(GameObject sphere1, GameObject sphere2)
     {

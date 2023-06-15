@@ -11,6 +11,7 @@ public class CollisionDetection : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collided");
+        _defaultColor = other.gameObject.GetComponent<Renderer>().material.color;
         other.gameObject.GetComponent<Renderer>().material.color = _collisionColor;
         other.gameObject.GetComponent<SphereScript>().isColliding = true;
         foreach (var renderer in GetComponentsInChildren<Renderer>())
@@ -26,13 +27,12 @@ public class CollisionDetection : MonoBehaviour
         other.gameObject.GetComponent<SphereScript>().isColliding = false;
         foreach (var renderer in GetComponentsInChildren<Renderer>())
         {
-            renderer.material.color = _defaultColor;
+            renderer.material.color = Color.white;
         }
     }
 
     private void Start()
     {
-        _defaultColor = Color.white;
         _collisionColor = new Color(0.074f, 0.145f, 0.494f);
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace WorkflowAR
 {
-    public class Menu : MonoBehaviour
+    public class RunMenu : MonoBehaviour
     {
         private GameObject _spherePrefab;
         private GameObject _toolTipPrefab;
@@ -65,7 +65,6 @@ namespace WorkflowAR
             goc.Columns = 6;
             goc.CellHeight = _spheresize.y * 2;
             goc.CellWidth = _spheresize.x * 2;
-            //goc.Anchor = LayoutAnchor.UpperLeft;
 
             foreach (WorkflowRun wr in data.workflow_runs)
             {
@@ -78,6 +77,7 @@ namespace WorkflowAR
             _cube.name = "Cube";
             Rigidbody rb = _cube.AddComponent<Rigidbody>();
             rb.useGravity = false;
+            rb.isKinematic = true;
             _cube.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             _cube.transform.localPosition = new Vector3(1, 0, 0.5f);
             _cube.AddComponent<CollisionDetection>();
@@ -86,6 +86,20 @@ namespace WorkflowAR
         private void CreateSphere(WorkflowRun wr)
         {
             GameObject temp = Instantiate(_spherePrefab, _parent.transform, false);
+            if (wr.conclusion.Equals("success"))
+            {
+                temp.GetComponent<Renderer>().material.color = Color.green;
+            }
+            else if (wr.conclusion.Equals("failure"))
+            {
+                temp.GetComponent<Renderer>().material.color = Color.red;
+            }
+            else 
+            {
+                temp.GetComponent<Renderer>().material.color = Color.white;
+            }
+
+
             temp.GetComponent<SphereCollider>().isTrigger = true;
             temp.AddComponent<NearInteractionGrabbable>();
             temp.AddComponent<ObjectManipulator>();
