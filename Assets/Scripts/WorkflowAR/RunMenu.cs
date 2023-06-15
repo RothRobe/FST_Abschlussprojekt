@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace WorkflowAR
 {
+    /*
+     * This class creates the menu which let's you visualize a specific run.
+     * Each run is visualized by a sphere.
+     * When you grab a sphere and release it in the transparent box to the right, this run will be visualized.
+     * When you release it outside the box, it will be warped back to it's original position.
+     */
     public class RunMenu : MonoBehaviour
     {
         private GameObject _spherePrefab;
@@ -15,18 +21,11 @@ namespace WorkflowAR
         private GameObject _parent;
         private GameObject _cube;
         private readonly Vector3 _spheresize = new Vector3(0.1f, 0.1f, 0.1f);
-
-        private String _url;
         private void Start()
         {
-            //Data data = JsonToData(ReadData("https://api.github.com/repos/RothRobe/FST22_UEB01/actions/runs"));
-            //Data data = JsonToData(ReadData("https://api.github.com/repos/microsoft/AI-For-Beginners/actions/runs"));
-            //CreateAllButtons(data.workflow_runs);
-            //gameObject.GetComponent<TimeLine>().StartVisualization("https://api.github.com/repos/microsoft/AI-For-Beginners/actions/runs/5177278694/jobs");
             _spherePrefab = Resources.Load<GameObject>("Prefabs/SpherePrefab");
             _toolTipPrefab = Resources.Load<GameObject>("Prefabs/ToolTipPrefab");
             _cubePrefab = Resources.Load<GameObject>("Prefabs/TransparentCubePrefab");
-            ShowMenu("https://api.github.com/repos/microsoft/AI-For-Beginners/actions/runs");
         }
 
         public void ShowMenu(String url)
@@ -38,17 +37,13 @@ namespace WorkflowAR
 
         private String ReadData(String url)
         {
-            _url = url;
-            
             WebClient wb = new WebClient();
             wb.Headers.Set("User-Agent", "PostmanRuntime/7.29.2");
             wb.Headers.Set("Host", "api.github.com");
             String data = wb.DownloadString(url);
             return data;
         }
-
-
-
+        
         private Data JsonToData(string json)
         {
             return JsonUtility.FromJson<Data>(json);
@@ -66,6 +61,7 @@ namespace WorkflowAR
             goc.CellHeight = _spheresize.y * 2;
             goc.CellWidth = _spheresize.x * 2;
 
+            //Then create a sphere for each run and update the GridObjectCollection
             foreach (WorkflowRun wr in data.workflow_runs)
             {
                 CreateSphere(wr);
@@ -73,6 +69,7 @@ namespace WorkflowAR
 
             goc.UpdateCollection();
 
+            //Create the transparent cube which let's you visualize the specified run
             _cube = Instantiate(_cubePrefab);
             _cube.name = "Cube";
             Rigidbody rb = _cube.AddComponent<Rigidbody>();
@@ -80,7 +77,7 @@ namespace WorkflowAR
             rb.isKinematic = true;
             _cube.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             _cube.transform.localPosition = new Vector3(1, 0, 0.5f);
-            _cube.AddComponent<CollisionDetection>();
+            _cube.AddComponent<CubeCollisionDetection>();
         }
 
         private void CreateSphere(WorkflowRun wr)
@@ -99,18 +96,18 @@ namespace WorkflowAR
                 temp.GetComponent<Renderer>().material.color = Color.white;
             }
 
-
+            //Adding the necessary components to make the spheres interactable. Also adding tooltips
             temp.GetComponent<SphereCollider>().isTrigger = true;
             temp.AddComponent<NearInteractionGrabbable>();
             temp.AddComponent<ObjectManipulator>();
-            SphereScript script = temp.AddComponent<SphereScript>();
-            script.url = wr.url;
+            SphereManipulation manipulation = temp.AddComponent<SphereManipulation>();
+            manipulation.url = wr.url;
+            manipulation.html_url = wr.html_url;
             Rigidbody rb = temp.AddComponent<Rigidbody>();
             rb.useGravity = false;
             temp.transform.localPosition = new Vector3(0, 0, 0);
             temp.transform.localScale = _spheresize;
             AddToolTip(wr, temp);
-            //return temp;
         }
         
         private void AddToolTip(WorkflowRun wr, GameObject sphere)
@@ -122,7 +119,6 @@ namespace WorkflowAR
                                                           "\nConclusion: " + wr.conclusion +
                                                           "\nEvent: " + wr.trigger +
                                                           "\nUrl: " + wr.html_url;
-            //toolTip.GetComponent<ToolTipConnector>().Target = sphere;
 
             toolTip.SetActive(false);
             toolTip.name = "ToolTip_" + wr.name;
@@ -135,36 +131,7 @@ namespace WorkflowAR
         {
             Destroy(_parent);
             Destroy(GameObject.Find("Cube"));
+            GameObject.Find("Main").GetComponent<TimeLine>().DestroyTimeline();
         }
-
-        /*
-        private void CreateButton(WorkflowRun wr)
-        {
-            //Skip if action is required because it usually means they are waiting for a maintainer's approval
-            //Which means you will not be able to see anything because it did not run yet.
-            if (wr.conclusion.Equals("action_required")) return;
-            
-            PressableButton button = Instantiate(buttonPrefab, goc.gameObject.transform, false);
-            button.name = "Button";
-            Destroy(button.transform.GetChild(4).GetChild(2).gameObject);
-            Destroy(button.transform.GetChild(4).GetChild(3).gameObject);
-            ButtonConfigHelper bch = button.GetComponent<ButtonConfigHelper>();
-            bch.MainLabelText = wr.id + " " + wr.name;
-            bch.IconStyle = ButtonIconStyle.Quad;
-            bch.OnClick.AddListener(
-                delegate
-                {
-                    gameObject.GetComponent<TimeLine>().StartVisualization(_url + "/" + wr.id + "/jobs");
-                });
-        }
-
-        private void CreateAllButtons(WorkflowRun[] wrs)
-        {
-            foreach (WorkflowRun wr in wrs)
-            {
-                CreateButton(wr);
-            }
-            goc.UpdateCollection();
-        }*/
     }
 }

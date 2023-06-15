@@ -12,12 +12,6 @@ namespace WorkflowAR
             _originalColor = GetComponent<Renderer>().material.color;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
@@ -32,7 +26,7 @@ namespace WorkflowAR
 
         public void OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            //throw new System.NotImplementedException();
+            //ignored
         }
     }
 }

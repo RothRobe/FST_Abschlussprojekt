@@ -5,21 +5,15 @@ using UnityEngine;
 
 namespace WorkflowAR
 {
-    public class SphereScript : MonoBehaviour
+    public class SphereManipulation : MonoBehaviour
     {
         public String url;
-
+        public String html_url;
         public bool isColliding;
         // Start is called before the first frame update
         void Start()
         {
             GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(Rebuild);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
         }
 
         public void Rebuild(ManipulationEventData data)
@@ -29,7 +23,9 @@ namespace WorkflowAR
                 GameObject main = GameObject.Find("Main");
                 main.GetComponent<RunMenu>().DestroyMenu();
                 Debug.Log(url);
-                main.GetComponent<TimeLine>().StartVisualization(url + "/jobs");
+                TimeLine tl = main.GetComponent<TimeLine>();
+                tl.URL = html_url;
+                tl.StartVisualization(url + "/jobs");
             }
             else
             {
